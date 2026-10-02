@@ -269,6 +269,12 @@ public:
   /// Returns the phrase translated by the current article.
   QString getWord() const;
 
+  /// Get the visible text of the current page (for the screen reader friendly text view)
+  void getPlainText( const std::function< void( const QString & ) > & callback );
+
+  /// Get the readable text of the current page together with its headings and links (JSON, see ArticleTextDialog)
+  void getStructuredText( const std::function< void( const QString & ) > & callback );
+
   /// Prints current article
   void print( QPrinter * ) const;
 

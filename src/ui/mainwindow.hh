@@ -10,6 +10,8 @@
 #include <QWebEngineSettings>
 #include <QFileDialog>
 #include <functional>
+#include "articletextdialog.hh"
+#include <QPointer>
 #include "ui_mainwindow.h"
 #include "config.hh"
 #include "dict/dictionary.hh"
@@ -120,6 +122,15 @@ private:
     lockPanelsAction, focusHeadwordsDlgAction, focusArticleViewAction, addAllTabToFavoritesAction;
 
   QAction useSmallIconsInToolbarsAction, useLargeIconsInToolbarsAction, useNormalIconsInToolbarsAction;
+
+  /// Opens the current article as plain text in a standard text box that screen readers can read with the arrow keys
+  QAction readArticleTextAction;
+
+  /// Checkable: when on, every article is shown in the text view as soon as it has loaded
+  QAction openResultsAsTextAction;
+
+  /// The text view that is currently open (if any)
+  QPointer< ArticleTextDialog > articleTextDialog;
 
   QActionGroup * smallLargeIconGroup = new QActionGroup( this );
 
@@ -487,6 +498,7 @@ private slots:
   void focusHeadwordsDialog();
 
   void focusArticleView();
+  void showArticleText();
   void stopAudio();
 
   void proxyAuthentication( const QNetworkProxy & proxy, QAuthenticator * authenticator );

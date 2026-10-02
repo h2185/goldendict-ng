@@ -295,6 +295,9 @@ struct Preferences
   /// are in the dockable side panel, not on the toolbar.
   bool searchInDock;
 
+  /// Show every looked up article as text in the screen reader friendly text view (see ArticleTextDialog)
+  bool openResultsAsText = true;
+
   bool enableMainWindowHotkey;
   bool enableClipboardHotkey;
 

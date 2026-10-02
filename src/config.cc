@@ -800,6 +800,10 @@ Class load()
     c.preferences.alwaysOnTop  = ( preferences.namedItem( "alwaysOnTop" ).toElement().text() == "1" );
     c.preferences.searchInDock = ( preferences.namedItem( "searchInDock" ).toElement().text() == "1" );
 
+    if ( !preferences.namedItem( "openResultsAsText" ).isNull() ) {
+      c.preferences.openResultsAsText = ( preferences.namedItem( "openResultsAsText" ).toElement().text() == "1" );
+    }
+
     if ( !preferences.namedItem( "customFonts" ).isNull() ) {
       CustomFonts fonts         = CustomFonts::fromElement( preferences.namedItem( "customFonts" ).toElement() );
       c.preferences.customFonts = fonts;
@@ -1874,6 +1878,10 @@ void save( const Class & c )
 
     opt = dd.createElement( "searchInDock" );
     opt.appendChild( dd.createTextNode( c.preferences.searchInDock ? "1" : "0" ) );
+    preferences.appendChild( opt );
+
+    opt = dd.createElement( "openResultsAsText" );
+    opt.appendChild( dd.createTextNode( c.preferences.openResultsAsText ? "1" : "0" ) );
     preferences.appendChild( opt );
 
     opt = dd.createElement( "favoritesStoreInterval" );

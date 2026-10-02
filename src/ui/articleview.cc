@@ -2,6 +2,7 @@
  * Part of GoldenDict. Licensed under GPLv3 or later, see the LICENSE file */
 
 #include "common/a11y.hh"
+#include "articletextdialog.hh"
 #include "articleview.hh"
 #include "dict/programs.hh"
 #include "folding.hh"
@@ -1137,6 +1138,18 @@ void ArticleView::linkClicked( const QUrl & url_ )
   else {
     openLink( url, webview->url(), getCurrentArticle(), contexts );
   }
+}
+
+void ArticleView::getPlainText( const std::function< void( const QString & ) > & callback )
+{
+  webview->page()->toPlainText( callback );
+}
+
+void ArticleView::getStructuredText( const std::function< void( const QString & ) > & callback )
+{
+  webview->page()->runJavaScript( ArticleTextDialog::extractionScript(), [ callback ]( const QVariant & result ) {
+    callback( result.toString() );
+  } );
 }
 
 void ArticleView::linkClickedInHtml( const QUrl & url_ )

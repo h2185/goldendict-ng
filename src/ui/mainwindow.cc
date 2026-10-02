@@ -6,7 +6,17 @@
 #endif
 
 #include "common/a11y.hh"
+#include "articletextdialog.hh"
 #include "mainwindow.hh"
+#include <memory>
+#include <QTimer>
+#include <QPointer>
+#include <QDialog>
+#include <QDialogButtonBox>
+#include <QPlainTextEdit>
+#include <QRegularExpression>
+#include <QVBoxLayout>
+#include <QTextCursor>
 #include "keyboardstate.hh"
 #include "logger.hh"
 #include <QWebEngineProfile>
@@ -175,6 +185,8 @@ MainWindow::MainWindow( Config::Class & cfg_ ):
   useSmallIconsInToolbarsAction( tr( "Show &Small Icons in Toolbars" ), this ),
   useLargeIconsInToolbarsAction( tr( "Show &Large Icons in Toolbars" ), this ),
   useNormalIconsInToolbarsAction( tr( "Show &Normal Icons in Toolbars" ), this ),
+  readArticleTextAction( tr( "Read Article as &Text" ), this ),
+  openResultsAsTextAction( tr( "Open Results as Text &Automatically" ), this ),
   stopAudioAction( this ),
   trayIconMenu( this ),
   addTab( this ),
@@ -504,6 +516,20 @@ MainWindow::MainWindow( Config::Class & cfg_ ):
     showFullTextSearchDialog();
   } );
 
+  addGlobalAction( &readArticleTextAction, [ this ]() {
+    showArticleText();
+  } );
+  readArticleTextAction.setShortcut( QKeySequence( "Ctrl+Shift+T" ) );
+
+  openResultsAsTextAction.setCheckable( true );
+  openResultsAsTextAction.setChecked( cfg.preferences.openResultsAsText );
+  connect( &openResultsAsTextAction, &QAction::toggled, this, [ this ]( bool on ) {
+    cfg.preferences.openResultsAsText = on;
+    A11y::announce( translateLine,
+                    on ? tr( "Results will open as text automatically" ) :
+                         tr( "Results will no longer open as text automatically" ) );
+  } );
+
   addGlobalAction( &stopAudioAction, [ this ]() {
     stopAudio();
   } );
@@ -615,6 +641,9 @@ MainWindow::MainWindow( Config::Class & cfg_ ):
   ui.menuView->addSeparator();
   ui.menuView->addAction( dictionaryBar.toggleViewAction() );
   ui.menuView->addAction( navToolbar->toggleViewAction() );
+  ui.menuView->addSeparator();
+  ui.menuView->addAction( &readArticleTextAction );
+  ui.menuView->addAction( &openResultsAsTextAction );
   ui.menuView->addSeparator();
   ui.menuView->addAction( &showDictBarNamesAction );
   ui.menuView->addSeparator();
@@ -2233,6 +2262,17 @@ void MainWindow::pageLoaded( ArticleView * view )
 
   updateBackForwardButtons();
   updatePronounceAvailability();
+
+  // Screen reader friendly mode: show the freshly loaded article as text.  The short delay lets the page's own
+  // scripts finish (expanding articles, scrolling to anchors) before the text is read.
+  if ( cfg.preferences.openResultsAsText && !view->getWord().isEmpty() ) {
+    QPointer< ArticleView > guard( view );
+    QTimer::singleShot( 300, this, [ this, guard ]() {
+      if ( guard && guard == getCurrentArticleView() && isActiveWindow() ) {
+        showArticleText();
+      }
+    } );
+  }
 }
 
 void MainWindow::showStatusBarMessage( const QString & message, int timeout, const QPixmap & icon )
@@ -2496,6 +2536,7 @@ void MainWindow::editPreferences()
     p.helpZoomFactor = cfg.preferences.helpZoomFactor;
     p.hideMenubar    = cfg.preferences.hideMenubar;
     p.searchInDock   = cfg.preferences.searchInDock;
+    p.openResultsAsText = cfg.preferences.openResultsAsText;
     p.alwaysOnTop    = cfg.preferences.alwaysOnTop;
 
     p.fts.dialogGeometry = cfg.preferences.fts.dialogGeometry;
@@ -4432,6 +4473,89 @@ void MainWindow::focusArticleView()
     }
     view->focus();
   }
+}
+
+void MainWindow::showArticleText()
+{
+  ArticleView * view = getCurrentArticleView();
+  if ( !view ) {
+    A11y::announce( translateLine, tr( "No article is open" ) );
+    return;
+  }
+
+  const QString word = view->getWord();
+  QPointer< ArticleView > viewGuard( view );
+
+  if ( articleTextDialog ) {
+    articleTextDialog->close();
+  }
+
+  // First ask the page for its text together with headings and links; the plain text is the fallback.
+  view->getStructuredText( [ this, viewGuard, word ]( const QString & json ) {
+    if ( !viewGuard ) {
+      return;
+    }
+
+    viewGuard->getPlainText( [ this, viewGuard, word, json ]( const QString & rawText ) {
+      QString plain = rawText;
+      plain.replace( QChar( 0x00A0 ), QLatin1Char( ' ' ) );
+      plain.replace( QRegularExpression( "\\n{3,}" ), "\n\n" );
+      plain = plain.trimmed();
+
+      if ( !viewGuard || ( plain.isEmpty() && json.isEmpty() ) ) {
+        A11y::announce( translateLine, tr( "The article is empty or still loading" ) );
+        return;
+      }
+
+      if ( articleTextDialog ) {
+        articleTextDialog->close();
+      }
+
+      const QString title = word.isEmpty() ? tr( "Article text" ) : tr( "Article text: %1" ).arg( word );
+
+      auto * dialog = new ArticleTextDialog(
+        title,
+        json,
+        plain,
+        [ this, viewGuard ]( const QUrl & url ) -> bool {
+          if ( !viewGuard ) {
+            return false;
+          }
+
+          const bool isLookup = url.scheme() == "gdlookup" || url.scheme() == "bword" || url.scheme() == "entry";
+
+          if ( isLookup && url.hasFragment() ) {
+            // A jump to another place of the same page: nothing changes in the text view.
+            A11y::announce( articleTextDialog.data(), tr( "Link to a position inside the page" ) );
+            return false;
+          }
+
+          // After following a dictionary link, show the new article's text once it has loaded
+          // (automatically done by pageLoaded() when "Open Results as Text Automatically" is on).
+          if ( isLookup && !cfg.preferences.openResultsAsText ) {
+            auto connection = std::make_shared< QMetaObject::Connection >();
+            *connection =
+              connect( viewGuard.data(), &ArticleView::pageLoaded, this, [ this, connection ]( ArticleView * ) {
+                QObject::disconnect( *connection );
+                showArticleText();
+              } );
+            QTimer::singleShot( 15000, this, [ connection ]() {
+              QObject::disconnect( *connection );
+            } );
+          }
+
+          viewGuard->linkClicked( url );
+
+          // Dictionary links load a new article, so this dialog is replaced; audio, external and other
+          // links leave the article as it is and the user can keep reading.
+          return isLookup;
+        },
+        this );
+
+      articleTextDialog = dialog;
+      dialog->show();
+    } );
+  } );
 }
 
 void MainWindow::stopAudio()
