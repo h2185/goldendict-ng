@@ -1,3 +1,4 @@
+#include "common/a11y.hh"
 #include "ftssearchpanel.hh"
 #include <QHBoxLayout>
 
@@ -19,6 +20,9 @@ FtsSearchPanel::FtsSearchPanel( QWidget * parent ):
 
   previous->setText( tr( "&Previous" ) );
   next->setText( tr( "&Next" ) );
+
+  // The status label changes while the user searches; let screen readers find it by name.
+  A11y::setName( statusLabel, tr( "Full-text search status" ) );
 
   layout->addStretch();
 }

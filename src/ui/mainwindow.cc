@@ -5,6 +5,7 @@
   #include "dict/epwing_book.hh"
 #endif
 
+#include "common/a11y.hh"
 #include "mainwindow.hh"
 #include "keyboardstate.hh"
 #include "logger.hh"
@@ -372,10 +373,14 @@ MainWindow::MainWindow( Config::Class & cfg_ ):
   menuButton->addAction( ui.menuOptions );
   menuButton->setToolTip( tr( "Menu Button" ) );
   menuButton->setObjectName( "menuButton" );
-  menuButton->setFocusPolicy( Qt::NoFocus );
+  menuButton->setFocusPolicy( Qt::TabFocus );
+  A11y::setName( menuButton, tr( "Menu" ), tr( "Opens the main menu" ) );
 
   menuButtonAction = navToolbar->addWidget( menuButton );
   menuButtonAction->setVisible( cfg.preferences.hideMenubar );
+
+  // Toolbar buttons are created by Qt with Qt::NoFocus and without spoken names: fix both.
+  A11y::makeToolBarAccessible( navToolbar );
 
   // Make the search pane's titlebar
   //  groupLabel.setText( tr( "Look up in:" ) );
@@ -403,8 +408,25 @@ MainWindow::MainWindow( Config::Class & cfg_ ):
   connect( &wordFinder, &WordFinder::finished, this, &MainWindow::prefixMatchFinished );
 
 
-  groupList->setFocusPolicy( Qt::ClickFocus );
-  ui.wordList->setFocusPolicy( Qt::ClickFocus );
+  // These must be reachable with the Tab key (ClickFocus made them mouse-only).
+  groupListInToolbar->setFocusPolicy( Qt::StrongFocus );
+  groupListInDock->setFocusPolicy( Qt::StrongFocus );
+  ui.wordList->setFocusPolicy( Qt::StrongFocus );
+
+  // Names spoken by screen readers
+  A11y::setName( groupListInToolbar, tr( "Dictionary group" ), tr( "Choose a Group (Alt+G)" ) );
+  A11y::setName( groupListInDock, tr( "Dictionary group" ), tr( "Choose a Group (Alt+G)" ) );
+  A11y::setName( ui.translateLine, tr( "Word to look up" ), tr( "Type a word or phrase to search dictionaries" ) );
+  A11y::setName( ui.wordList, tr( "Suggestions" ) );
+  A11y::setName( ui.dictsList, tr( "Found in Dictionaries:" ) );
+  A11y::setName( ui.historyList, tr( "History" ) );
+  A11y::setName( ui.favoritesTree, tr( "Favorites" ) );
+  A11y::setName( ui.tabWidget, tr( "Articles" ) );
+  A11y::setName( ui.tabWidget->tabBar(), tr( "Article tabs" ) );
+  A11y::setName( ui.searchPane, ui.searchPane->windowTitle() );
+  A11y::setName( ui.dictsPane, ui.dictsPane->windowTitle() );
+  A11y::setName( ui.favoritesPane, ui.favoritesPane->windowTitle() );
+  A11y::setName( ui.historyPane, ui.historyPane->windowTitle() );
 
   wordListDefaultFont      = ui.wordList->font();
   translateLineDefaultFont = translateLine->font();
@@ -686,7 +708,8 @@ MainWindow::MainWindow( Config::Class & cfg_ ):
 
   addTab.setAutoRaise( true );
   addTab.setToolTip( tr( "New Tab" ) );
-  addTab.setFocusPolicy( Qt::NoFocus );
+  addTab.setFocusPolicy( Qt::TabFocus );
+  A11y::setName( &addTab, tr( "New Tab" ) );
   addTab.setIcon( QIcon( ":/icons/addtab.svg" ) );
 
   ui.tabWidget->setHideSingleTab( cfg.preferences.hideSingleTab );
@@ -1103,6 +1126,11 @@ void MainWindow::updateMatchResults( bool finished )
 
     refreshTranslateLine();
 
+    // Tell screen reader users how many suggestions appeared (focus stays in the input field)
+    if ( !results.empty() ) {
+      A11y::announce( translateLine, tr( "%n suggestion(s)", nullptr, static_cast< int >( results.size() ) ) );
+    }
+
     if ( !wordFinder.getErrorString().isEmpty() ) {
       emit showStatusBarMessage( tr( "WARNING: %1" ).arg( wordFinder.getErrorString() ),
                                  20000,
@@ -1122,6 +1150,10 @@ void MainWindow::refreshTranslateLine()
   Utils::Widget::setNoResultColor( translateLine, setMark );
   if ( !cfg.preferences.searchInDock ) {
     translateBox->setNoResults( setMark );
+  }
+  else if ( setMark ) {
+    // The red colour is invisible to a screen reader, so say it too
+    A11y::announce( translateLine, tr( "No results" ) );
   }
 }
 
@@ -1912,7 +1944,8 @@ void MainWindow::createTabList()
   tabListButton->setToolTip( tr( "Open Tabs List" ) );
   tabListButton->setPopupMode( QToolButton::InstantPopup );
   ui.tabWidget->setCornerWidget( tabListButton );
-  tabListButton->setFocusPolicy( Qt::NoFocus );
+  tabListButton->setFocusPolicy( Qt::TabFocus );
+  A11y::setName( tabListButton, tr( "Open Tabs List" ) );
 }
 
 void MainWindow::fillWindowsMenu()

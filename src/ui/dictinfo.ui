@@ -118,6 +118,9 @@
    </item>
    <item>
     <widget class="QLabel" name="dictionaryFileLabel">
+     <property name="buddy">
+       <cstring>dictionaryFileList</cstring>
+     </property>
      <property name="text">
       <string>Dictionary Components:</string>
      </property>
@@ -162,6 +165,9 @@
    </item>
    <item>
     <widget class="QLabel" name="dictionaryDescriptionLabel">
+     <property name="buddy">
+       <cstring>infoLabel</cstring>
+     </property>
      <property name="text">
       <string>Description:</string>
      </property>

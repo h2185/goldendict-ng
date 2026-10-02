@@ -1,4 +1,6 @@
 #include "dictionarybar.hh"
+#include "common/a11y.hh"
+#include <QKeyEvent>
 #include "instances.hh"
 #include "globalbroadcaster.hh"
 #include <QAction>
@@ -21,6 +23,7 @@ DictionaryBar::DictionaryBar( QWidget * parent, const unsigned short & maxDictio
   normalIconSize = { this->iconSize().height(), this->iconSize().height() };
 
   setObjectName( "dictionaryBar" );
+  A11y::setName( this, tr( "Dictionary bar" ), tr( "Use the arrow keys to move between dictionaries" ) );
 
   maxDictionaryRefsAction =
     new QAction( QIcon( ":/icons/addtab.svg" ), tr( "Extended menu with all dictionaries..." ), this );
@@ -76,10 +79,85 @@ void DictionaryBar::setDictionaries( const vector< sptr< Dictionary::Class > > &
     action->setChecked( mutedDictionaries ? !mutedDictionaries->contains( id ) : true );
 
     dictActions.append( action );
+
+    // Screen reader / keyboard support: full dictionary name (the visible text is elided),
+    // the checked state tells whether the dictionary is enabled.
+    if ( QWidget * button = widgetForAction( action ) ) {
+      A11y::setName( button, dictName );
+      button->installEventFilter( this );
+    }
   }
 
+  if ( !dictActions.isEmpty() ) {
+    setRovingFocusTarget( widgetForAction( dictActions.first() ) );
+  }
 
   setUpdatesEnabled( true );
+}
+
+void DictionaryBar::setRovingFocusTarget( QWidget * target )
+{
+  for ( QAction * action : std::as_const( dictActions ) ) {
+    if ( QWidget * button = widgetForAction( action ) ) {
+      button->setFocusPolicy( button == target ? Qt::TabFocus : Qt::NoFocus );
+    }
+  }
+}
+
+bool DictionaryBar::eventFilter( QObject * obj, QEvent * event )
+{
+  auto * button = qobject_cast< QWidget * >( obj );
+
+  if ( button && ( event->type() == QEvent::FocusIn || event->type() == QEvent::KeyPress ) ) {
+    int index = -1;
+    for ( int i = 0; i < dictActions.size(); ++i ) {
+      if ( widgetForAction( dictActions[ i ] ) == button ) {
+        index = i;
+        break;
+      }
+    }
+
+    if ( index >= 0 ) {
+      if ( event->type() == QEvent::FocusIn ) {
+        setRovingFocusTarget( button );
+      }
+      else {
+        const int key = static_cast< QKeyEvent * >( event )->key();
+        int target    = -1;
+        switch ( key ) {
+          case Qt::Key_Right:
+          case Qt::Key_Down:
+            target = index + 1;
+            break;
+          case Qt::Key_Left:
+          case Qt::Key_Up:
+            target = index - 1;
+            break;
+          case Qt::Key_Home:
+            target = 0;
+            break;
+          case Qt::Key_End:
+            target = dictActions.size() - 1;
+            break;
+          default:
+            break;
+        }
+
+        if ( target >= 0 && target < dictActions.size() ) {
+          if ( QWidget * next = widgetForAction( dictActions[ target ] ) ) {
+            next->setFocus( Qt::TabFocusReason );
+          }
+          return true;
+        }
+        else if ( target != -1 || key == Qt::Key_Left || key == Qt::Key_Right || key == Qt::Key_Up
+                  || key == Qt::Key_Down ) {
+          return true; // at either end: stay on the button instead of leaking the key press
+        }
+      }
+    }
+  }
+
+  return QToolBar::eventFilter( obj, event );
 }
 
 void DictionaryBar::updateToGroup( const Instances::Group * grp,

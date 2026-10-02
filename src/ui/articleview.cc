@@ -1,6 +1,7 @@
 /* This file is (c) 2008-2012 Konstantin Isakov <ikm@goldendict.org>
  * Part of GoldenDict. Licensed under GPLv3 or later, see the LICENSE file */
 
+#include "common/a11y.hh"
 #include "articleview.hh"
 #include "dict/programs.hh"
 #include "folding.hh"
@@ -220,7 +221,8 @@ ArticleView::ArticleView( QWidget * parent,
   // More secure settings to prevent XSS attacks and filesystem access
   settings->setAttribute( QWebEngineSettings::LocalContentCanAccessFileUrls, false );
   settings->setAttribute( QWebEngineSettings::ErrorPageEnabled, false );
-  settings->setAttribute( QWebEngineSettings::LinksIncludedInFocusChain, false );
+  // Links must be part of the Tab order, otherwise keyboard-only users cannot follow them.
+  settings->setAttribute( QWebEngineSettings::LinksIncludedInFocusChain, true );
   settings->setAttribute( QWebEngineSettings::PlaybackRequiresUserGesture, false );
   settings->setAttribute( QWebEngineSettings::JavascriptCanAccessClipboard,
                           cfg.preferences.enableJavaScriptClipboardAccess );
@@ -572,6 +574,12 @@ void ArticleView::loadFinished( bool result )
   //the audio link click ,no need to emit pageLoaded signal
   if ( result ) {
     emit pageLoaded( this );
+
+    // Focus usually stays in the search field, so tell screen reader users that the article is ready
+    const QString loadedTitle = webview->title();
+    if ( !loadedTitle.isEmpty() && !loadedTitle.contains( "://" ) ) {
+      A11y::announce( webview, tr( "Article loaded: %1" ).arg( loadedTitle ) );
+    }
   }
 }
 
@@ -579,6 +587,10 @@ void ArticleView::handleTitleChanged( const QString & title )
 {
   // Use custom title if it's a website view and custom title is set; otherwise use the original title
   QString displayTitle = ( isWebsiteView && !customTitle.isEmpty() ) ? customTitle : title;
+
+  if ( !displayTitle.isEmpty() && !displayTitle.contains( "://" ) ) {
+    A11y::setName( webview, displayTitle );
+  }
 
   if ( !displayTitle.isEmpty() && !displayTitle.contains( "://" ) ) {
     emit titleChanged( this, displayTitle );
@@ -2145,6 +2157,10 @@ void ArticleView::performFindOperation( bool backwards )
   findText( text, f, [ text, this ]( bool match ) {
     bool nomatch = !text.isEmpty() && !match;
     Utils::Widget::setNoResultColor( searchPanel->lineEdit, nomatch );
+    // Colour alone is not available to screen readers
+    if ( !text.isEmpty() ) {
+      A11y::announce( searchPanel->lineEdit, match ? tr( "Match found" ) : tr( "No matches found" ) );
+    }
   } );
 }
 

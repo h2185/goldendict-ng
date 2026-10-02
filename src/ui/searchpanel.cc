@@ -1,3 +1,4 @@
+#include "common/a11y.hh"
 #include "searchpanel.hh"
 #include <QLabel>
 #include <QVBoxLayout>
@@ -9,6 +10,9 @@ SearchPanel::SearchPanel( QWidget * parent ):
 
   close = new QPushButton( this );
   close->setIcon( QIcon( ":/icons/closetab.svg" ) );
+  close->setToolTip( tr( "Close search bar" ) );
+  A11y::setName( close, tr( "Close search bar" ), tr( "Closes the search bar and returns to the article" ) );
+  A11y::setName( lineEdit, tr( "Find in article" ) );
 
   previous = new QPushButton( this );
   previous->setIcon( QIcon( ":/icons/previous.svg" ) );
@@ -23,7 +27,8 @@ SearchPanel::SearchPanel( QWidget * parent ):
   caseSensitive = new QCheckBox( this );
   caseSensitive->setText( tr( "&Case Sensitive" ) );
 
-  auto * searchLabel = new QLabel( tr( "Find:" ) );
+  auto * searchLabel = new QLabel( tr( "&Find:" ) );
+  searchLabel->setBuddy( lineEdit );
 
   auto * editRow = new QHBoxLayout(); // parent will be set in layout->addLayout.
   editRow->addWidget( searchLabel );

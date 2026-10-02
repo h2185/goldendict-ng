@@ -1,6 +1,7 @@
 /* This file is (c) 2012 Tvangeste <i.4m.l33t@yandex.ru>
  * Part of GoldenDict. Licensed under GPLv3 or later, see the LICENSE file */
 
+#include "common/a11y.hh"
 #include "mainstatusbar.hh"
 
 #include <QFrame>
@@ -116,6 +117,8 @@ void MainStatusBar::showMessage( const QString & str, int timeout, const QPixmap
   else {
     show();
     updatePosition();
+    // This overlay is not a real QStatusBar, so screen readers would never notice the message.
+    A11y::announce( textWidget, str );
   }
 }
 

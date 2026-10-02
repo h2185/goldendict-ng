@@ -24,6 +24,9 @@
      </property>
      <item>
       <widget class="QLabel" name="label">
+       <property name="buddy">
+         <cstring>groupIcon</cstring>
+       </property>
        <property name="text">
         <string>Group icon:</string>
        </property>
@@ -72,6 +75,9 @@
      </item>
      <item>
       <widget class="QLabel" name="label_2">
+       <property name="buddy">
+         <cstring>shortcut</cstring>
+       </property>
        <property name="text">
         <string>Shortcut:</string>
        </property>
@@ -116,6 +122,9 @@
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QLabel" name="label_4">
+       <property name="buddy">
+         <cstring>favoritesFolder</cstring>
+       </property>
        <property name="text">
         <string>Favorites folder:</string>
        </property>

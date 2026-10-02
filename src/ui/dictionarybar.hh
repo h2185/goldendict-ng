@@ -87,9 +87,15 @@ private:
 
   QSize normalIconSize; // cache icon size set by stylesheet provided by user
 
+  /// Roving focus: only the given button is reachable with Tab, the others with the arrow keys.
+  void setRovingFocusTarget( QWidget * button );
+
 protected:
 
   void contextMenuEvent( QContextMenuEvent * event );
+
+  /// Arrow-key navigation between the dictionary buttons (the bar is a single Tab stop for keyboard users).
+  bool eventFilter( QObject * obj, QEvent * event ) override;
 
 private slots:
 

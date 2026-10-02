@@ -16,6 +16,9 @@
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
     <widget class="QLabel" name="label_3">
+     <property name="buddy">
+       <cstring>selectedVoiceEngines</cstring>
+     </property>
      <property name="text">
       <string>Selected voice engines:</string>
      </property>
@@ -73,6 +76,9 @@
      <layout class="QHBoxLayout" name="horizontalLayout_5">
       <item>
        <widget class="QLabel" name="label_4">
+        <property name="buddy">
+          <cstring>volumeSlider</cstring>
+        </property>
         <property name="text">
          <string>Volume:</string>
         </property>
@@ -102,6 +108,9 @@
       </item>
       <item>
        <widget class="QLabel" name="label_5">
+        <property name="buddy">
+          <cstring>rateSlider</cstring>
+        </property>
         <property name="text">
          <string>Rate:</string>
         </property>
@@ -151,6 +160,9 @@
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="QLabel" name="label_2">
+          <property name="buddy">
+            <cstring>availableVoiceEngines</cstring>
+          </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -169,6 +181,9 @@
       </item>
       <item>
        <widget class="QLabel" name="label">
+        <property name="buddy">
+          <cstring>previewText</cstring>
+        </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
           <horstretch>0</horstretch>

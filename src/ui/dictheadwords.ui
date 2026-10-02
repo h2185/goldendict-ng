@@ -18,6 +18,9 @@
     <layout class="QHBoxLayout" name="filterLayout">
      <item>
       <widget class="QLabel" name="label">
+       <property name="buddy">
+         <cstring>filterLine</cstring>
+       </property>
        <property name="text">
         <string>Filter:</string>
        </property>
@@ -82,6 +85,9 @@
      </item>
      <item>
       <widget class="QLabel" name="label_2">
+       <property name="buddy">
+         <cstring>filterMaxResult</cstring>
+       </property>
        <property name="toolTip">
         <string>Specify the maximum filtered headwords returned.</string>
        </property>

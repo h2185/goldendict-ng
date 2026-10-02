@@ -283,6 +283,22 @@ int main( int argc, char ** argv )
 
   qputenv( "QT_QPA_PLATFORM", "windows:darkmode=1" );
 
+  // Screen reader support: when a screen reader (NVDA, JAWS, Narrator...) is running, ask Chromium to build its
+  // accessibility tree from the very start, so articles are readable in browse mode as soon as they load.
+  {
+    BOOL screenReaderRunning = FALSE;
+    if ( SystemParametersInfoW( SPI_GETSCREENREADER, 0, &screenReaderRunning, 0 ) && screenReaderRunning ) {
+      QByteArray flags = qgetenv( "QTWEBENGINE_CHROMIUM_FLAGS" );
+      if ( !flags.contains( "--force-renderer-accessibility" ) ) {
+        if ( !flags.isEmpty() ) {
+          flags += ' ';
+        }
+        flags += "--force-renderer-accessibility";
+        qputenv( "QTWEBENGINE_CHROMIUM_FLAGS", flags );
+      }
+    }
+  }
+
 #endif
   // High DPI screen support
   QGuiApplication::setHighDpiScaleFactorRoundingPolicy( Qt::HighDpiScaleFactorRoundingPolicy::PassThrough );

@@ -2,6 +2,7 @@
  * Part of GoldenDict. Licensed under GPLv3 or later, see the LICENSE file */
 
 #include "translatebox.hh"
+#include "common/a11y.hh"
 
 #include <QAction>
 #include <QHBoxLayout>
@@ -33,14 +34,17 @@ TranslateBox::TranslateBox( QWidget * parent ):
   layout->setContentsMargins( 0, 0, 0, 0 );
   layout->addWidget( translate_line );
 
-  dropdown = new QAction( QIcon( ":/icons/1downarrow.svg" ), tr( "Drop-down" ), this );
+  dropdown = new QAction( QIcon( ":/icons/1downarrow.svg" ), tr( "Show suggestions" ), this );
   connect( dropdown, &QAction::triggered, this, &TranslateBox::rightButtonClicked );
 
   translate_line->addAction( dropdown, QLineEdit::TrailingPosition );
-  translate_line->addAction( new QAction( QIcon( ":/icons/system-search.svg" ), "", this ),
+  translate_line->addAction( new QAction( QIcon( ":/icons/system-search.svg" ), tr( "Search" ), this ),
                              QLineEdit::LeadingPosition );
 
-  translate_line->setFocusPolicy( Qt::ClickFocus );
+  // Must be reachable with the Tab key, otherwise keyboard-only and screen reader users cannot get here
+  // except through the Alt+D / Ctrl+L shortcuts.
+  translate_line->setFocusPolicy( Qt::StrongFocus );
+  A11y::setName( translate_line, tr( "Word to look up" ), tr( "Type a word or phrase to search dictionaries" ) );
 
   translate_line->installEventFilter( this );
 
@@ -82,6 +86,7 @@ void TranslateBox::setModel( QStringList & _words )
   model->setStringList( _words );
 
   completer->popup()->scrollToTop();
+  A11y::setName( completer->popup(), tr( "Suggestions" ) );
 
   connect( completer,
            QOverload< const QString & >::of( &QCompleter::activated ),
@@ -95,6 +100,7 @@ void TranslateBox::setModel( QStringList & _words )
 void TranslateBox::setNoResults( bool noResults )
 {
   if ( noResults ) {
+    A11y::announce( translate_line, tr( "No results" ) );
     QIcon icon( ":/icons/1downarrow.svg" );
     QPixmap pixmap = icon.pixmap( 32, 32 );
     QPainter painter( &pixmap );

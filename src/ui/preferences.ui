@@ -147,6 +147,9 @@ however, the article from the topmost dictionary is shown.</string>
              <layout class="QHBoxLayout" name="horizontalLayout_13">
               <item>
                <widget class="QLabel" name="maxDictsInContextMenuLabel">
+                <property name="buddy">
+                  <cstring>maxDictsInContextMenu</cstring>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -313,6 +316,9 @@ be the last ones.</string>
                 <layout class="QHBoxLayout" name="horizontalLayout_17">
                  <item>
                   <widget class="QLabel" name="label_29">
+                   <property name="buddy">
+                     <cstring>systemFont</cstring>
+                   </property>
                    <property name="text">
                     <string>Font</string>
                    </property>
@@ -327,6 +333,9 @@ be the last ones.</string>
                 <layout class="QHBoxLayout" name="horizontalLayout_19">
                  <item>
                   <widget class="QLabel" name="label_30">
+                   <property name="buddy">
+                     <cstring>interfaceFontSize</cstring>
+                   </property>
                    <property name="text">
                     <string>Font Size</string>
                    </property>
@@ -351,6 +360,9 @@ be the last ones.</string>
              <layout class="QHBoxLayout" name="horizontalLayout_4">
               <item>
                <widget class="QLabel" name="label_6">
+                <property name="buddy">
+                  <cstring>interfaceLanguage</cstring>
+                </property>
                 <property name="text">
                  <string>Interface language</string>
                 </property>
@@ -381,6 +393,9 @@ be the last ones.</string>
              <layout class="QHBoxLayout" name="horizontalLayout_5">
               <item>
                <widget class="QLabel" name="label_9">
+                <property name="buddy">
+                  <cstring>displayStyle</cstring>
+                </property>
                 <property name="text">
                  <string>Article Display style</string>
                 </property>
@@ -408,6 +423,9 @@ be the last ones.</string>
              <layout class="QHBoxLayout" name="horizontalLayout_12">
               <item>
                <widget class="QLabel" name="addonStylesLabel">
+                <property name="buddy">
+                  <cstring>addonStyles</cstring>
+                </property>
                 <property name="text">
                  <string>Add-on style</string>
                 </property>
@@ -435,6 +453,9 @@ be the last ones.</string>
              <layout class="QHBoxLayout" name="interfaceStyleLayout">
               <item>
                <widget class="QLabel" name="interfaceStyleLabel">
+                <property name="buddy">
+                  <cstring>InterfaceStyle</cstring>
+                </property>
                 <property name="text">
                  <string>Interface Style</string>
                 </property>
@@ -449,6 +470,9 @@ be the last ones.</string>
              <layout class="QHBoxLayout" name="darkModeLayout">
               <item>
                <widget class="QLabel" name="darkModeLabel">
+                <property name="buddy">
+                  <cstring>darkMode</cstring>
+                </property>
                 <property name="toolTip">
                  <string>Turn the UI to dark.</string>
                 </property>
@@ -470,6 +494,9 @@ be the last ones.</string>
              <layout class="QHBoxLayout" name="darkReaderLayout">
               <item>
                <widget class="QLabel" name="darkReaderModeLabel">
+                <property name="buddy">
+                  <cstring>darkReaderMode</cstring>
+                </property>
                 <property name="toolTip">
                  <string>Turn the article display style to dark.</string>
                 </property>
@@ -540,6 +567,9 @@ be the last ones.</string>
            <layout class="QVBoxLayout" name="verticalLayout_24">
             <item>
              <widget class="QLabel" name="label_16">
+              <property name="buddy">
+                <cstring>font_standard</cstring>
+              </property>
               <property name="text">
                <string>Standard Font</string>
               </property>
@@ -557,6 +587,9 @@ be the last ones.</string>
             </item>
             <item>
              <widget class="QLabel" name="label_21">
+              <property name="buddy">
+                <cstring>font_serif</cstring>
+              </property>
               <property name="text">
                <string>Serif Font</string>
               </property>
@@ -574,6 +607,9 @@ be the last ones.</string>
             </item>
             <item>
              <widget class="QLabel" name="label_26">
+              <property name="buddy">
+                <cstring>font_sans</cstring>
+              </property>
               <property name="text">
                <string>Sans-serif Font</string>
               </property>
@@ -591,6 +627,9 @@ be the last ones.</string>
             </item>
             <item>
              <widget class="QLabel" name="label_27">
+              <property name="buddy">
+                <cstring>font_monospace</cstring>
+              </property>
               <property name="text">
                <string>Monospace Font</string>
               </property>
@@ -831,6 +870,9 @@ in the pressed state when the word selection changes.</string>
             <layout class="QHBoxLayout" name="horizontalLayout_6">
              <item>
               <widget class="QLabel" name="delayTimerLabel">
+               <property name="buddy">
+                 <cstring>delayTimer</cstring>
+               </property>
                <property name="text">
                 <string>Delay time</string>
                </property>
@@ -1116,6 +1158,9 @@ for all program's network requests.</string>
               <layout class="QHBoxLayout" name="horizontalLayout_3">
                <item>
                 <widget class="QLabel" name="label">
+                 <property name="buddy">
+                   <cstring>proxyType</cstring>
+                 </property>
                  <property name="text">
                   <string>Type:</string>
                  </property>
@@ -1126,6 +1171,9 @@ for all program's network requests.</string>
                </item>
                <item>
                 <widget class="QLabel" name="label_3">
+                 <property name="buddy">
+                   <cstring>proxyHost</cstring>
+                 </property>
                  <property name="text">
                   <string>Host:</string>
                  </property>
@@ -1136,6 +1184,9 @@ for all program's network requests.</string>
                </item>
                <item>
                 <widget class="QLabel" name="label_2">
+                 <property name="buddy">
+                   <cstring>proxyPort</cstring>
+                 </property>
                  <property name="text">
                   <string>Port:</string>
                  </property>
@@ -1157,6 +1208,9 @@ for all program's network requests.</string>
               <layout class="QHBoxLayout" name="horizontalLayout_2">
                <item>
                 <widget class="QLabel" name="label_4">
+                 <property name="buddy">
+                   <cstring>proxyUser</cstring>
+                 </property>
                  <property name="text">
                   <string>User:</string>
                  </property>
@@ -1167,6 +1221,9 @@ for all program's network requests.</string>
                </item>
                <item>
                 <widget class="QLabel" name="label_5">
+                 <property name="buddy">
+                   <cstring>proxyPassword</cstring>
+                 </property>
                  <property name="text">
                   <string>Password:</string>
                  </property>
@@ -1278,7 +1335,11 @@ download page.</string>
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="ankiHost"/>
+               <widget class="QLineEdit" name="ankiHost">
+                <property name="accessibleName">
+                 <string>Anki server address</string>
+                </property>
+               </widget>
               </item>
              </layout>
             </item>
@@ -1291,6 +1352,9 @@ download page.</string>
             </item>
             <item>
              <widget class="QSpinBox" name="ankiPort">
+              <property name="accessibleName">
+                <string>Anki server port</string>
+              </property>
               <property name="maximum">
                <number>65535</number>
               </property>
@@ -1318,6 +1382,9 @@ download page.</string>
            <layout class="QHBoxLayout" name="horizontalLayout_22">
             <item>
              <widget class="QLabel" name="label_28">
+              <property name="buddy">
+                <cstring>ankiDeck</cstring>
+              </property>
               <property name="text">
                <string>Deck:</string>
               </property>
@@ -1334,7 +1401,11 @@ download page.</string>
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="ankiModel"/>
+             <widget class="QLineEdit" name="ankiModel">
+              <property name="accessibleName">
+               <string>Anki note type</string>
+              </property>
+             </widget>
             </item>
             <item>
              <spacer name="horizontalSpacer_17">
@@ -1355,6 +1426,9 @@ download page.</string>
            <layout class="QFormLayout" name="formLayout">
             <item row="0" column="0">
              <widget class="QLabel" name="wordLabel">
+              <property name="buddy">
+                <cstring>ankiWord</cstring>
+              </property>
               <property name="text">
                <string>Word</string>
               </property>
@@ -1369,6 +1443,9 @@ download page.</string>
             </item>
             <item row="1" column="0">
              <widget class="QLabel" name="textLabel">
+              <property name="buddy">
+                <cstring>ankiText</cstring>
+              </property>
               <property name="text">
                <string>Text</string>
               </property>
@@ -1383,6 +1460,9 @@ download page.</string>
             </item>
             <item row="2" column="0">
              <widget class="QLabel" name="sentenceLabel">
+              <property name="buddy">
+                <cstring>ankiSentence</cstring>
+              </property>
               <property name="text">
                <string>Sentence</string>
               </property>
@@ -1517,6 +1597,9 @@ download page.</string>
            <layout class="QHBoxLayout" name="horizontalLayout_14">
             <item>
              <widget class="QLabel" name="label_14">
+              <property name="buddy">
+                <cstring>maxDictionarySize</cstring>
+              </property>
               <property name="text">
                <string>Don't search in dictionaries containing more than</string>
               </property>
@@ -1568,6 +1651,9 @@ download page.</string>
         <layout class="QHBoxLayout" name="horizontalLayout_18">
          <item>
           <widget class="QLabel" name="label_7">
+           <property name="buddy">
+             <cstring>parallelThreads</cstring>
+           </property>
            <property name="text">
             <string>Create fulltext index with parallel threads </string>
            </property>
@@ -1647,6 +1733,9 @@ download page.</string>
               </property>
               <item>
                <widget class="QLabel" name="historySizeLabel">
+                <property name="buddy">
+                  <cstring>historyMaxSizeField</cstring>
+                </property>
                 <property name="toolTip">
                  <string>Specify the maximum number of entries to keep in history.</string>
                 </property>
@@ -1699,6 +1788,9 @@ download page.</string>
               </property>
               <item>
                <widget class="QLabel" name="label_17">
+                <property name="buddy">
+                  <cstring>favoritesSaveIntervalField</cstring>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                   <horstretch>0</horstretch>

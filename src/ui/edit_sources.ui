@@ -42,6 +42,9 @@
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="QLabel" name="label">
+         <property name="buddy">
+           <cstring>paths</cstring>
+         </property>
          <property name="text">
           <string>Paths to search for the dictionary files:</string>
          </property>
@@ -105,6 +108,9 @@
       <layout class="QVBoxLayout" name="verticalLayout_7">
        <item>
         <widget class="QLabel" name="label_3">
+         <property name="buddy">
+           <cstring>soundDirs</cstring>
+         </property>
          <property name="text">
           <string>Make dictionaries from bunches of audiofiles by adding paths here:</string>
          </property>
@@ -161,6 +167,9 @@
       <layout class="QVBoxLayout" name="verticalLayout_8">
        <item>
         <widget class="QLabel" name="label_4">
+         <property name="buddy">
+           <cstring>hunspellPath</cstring>
+         </property>
          <property name="text">
           <string>Path to a directory with Hunspell/Myspell dictionaries:</string>
          </property>
@@ -186,6 +195,9 @@
        </item>
        <item>
         <widget class="QLabel" name="label_5">
+         <property name="buddy">
+           <cstring>hunspellDictionaries</cstring>
+         </property>
          <property name="text">
           <string>Available morphology dictionaries:</string>
          </property>
@@ -229,6 +241,9 @@ of the appropriate groups to use them.</string>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
         <widget class="QLabel" name="label_2">
+         <property name="buddy">
+           <cstring>mediaWikis</cstring>
+         </property>
          <property name="text">
           <string>Wikipedia (MediaWiki) sites:</string>
          </property>
@@ -288,6 +303,9 @@ of the appropriate groups to use them.</string>
       <layout class="QVBoxLayout" name="verticalLayout_11">
        <item>
         <widget class="QLabel" name="label_9">
+         <property name="buddy">
+           <cstring>webSites</cstring>
+         </property>
          <property name="text">
           <string>Any websites. A string %GDWORD% will be replaced with the query word:</string>
          </property>
@@ -354,6 +372,9 @@ of the appropriate groups to use them.</string>
       <layout class="QVBoxLayout" name="verticalLayout_16">
        <item>
         <widget class="QLabel" name="label_116">
+         <property name="buddy">
+           <cstring>dictServers</cstring>
+         </property>
          <property name="text">
           <string>DICT servers:</string>
          </property>
@@ -410,6 +431,9 @@ of the appropriate groups to use them.</string>
       <layout class="QVBoxLayout" name="verticalLayout_15">
        <item>
         <widget class="QLabel" name="label_16">
+         <property name="buddy">
+           <cstring>programs</cstring>
+         </property>
          <property name="text">
           <string>Any external programs. A string %GDWORD% will be replaced with the query word. A string %GDSEARCH% will be replaced with the text in the search bar. If both of the parameters are not provided, the headword will be fed into standard input.</string>
          </property>
@@ -488,6 +512,9 @@ of the appropriate groups to use them.</string>
          <layout class="QFormLayout" name="formLayout_2">
           <item row="0" column="0">
            <widget class="QLabel" name="label_18">
+            <property name="buddy">
+              <cstring>linguaLangCode</cstring>
+            </property>
             <property name="text">
              <string>ISO 639-3 language code</string>
             </property>
@@ -573,6 +600,9 @@ Full list of availiable languages can be found &lt;a href=&quot;https://linguali
             </property>
             <item row="0" column="0">
              <widget class="QLabel" name="label_12">
+              <property name="buddy">
+                <cstring>forvoApiKey</cstring>
+              </property>
               <property name="text">
                <string>API Key:</string>
               </property>
@@ -616,6 +646,9 @@ Full list of availiable languages can be found &lt;a href=&quot;https://linguali
             </item>
             <item row="2" column="0">
              <widget class="QLabel" name="label_14">
+              <property name="buddy">
+                <cstring>forvoLanguageCodes</cstring>
+              </property>
               <property name="text">
                <string>Language codes (comma-separated):</string>
               </property>
@@ -809,6 +842,9 @@ Full list of availiable languages can be found &lt;a href=&quot;https://linguali
            <layout class="QVBoxLayout" name="verticalLayout_19">
             <item>
              <widget class="QLabel" name="label_21">
+              <property name="buddy">
+                <cstring>customTransliteration</cstring>
+              </property>
               <property name="text">
                <string>This only applied in search phrase, with each line represent a transliteration,semicolon seperated. For example, ae;æ,users can input ae to represent æ in the target word.</string>
               </property>

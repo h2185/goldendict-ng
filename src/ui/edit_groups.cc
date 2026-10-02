@@ -33,7 +33,8 @@ Groups::Groups( QWidget * parent,
   groupsListButton->setToolTip( tr( "Open groups list" ) );
   groupsListButton->setPopupMode( QToolButton::InstantPopup );
   ui.groups->setCornerWidget( groupsListButton );
-  groupsListButton->setFocusPolicy( Qt::ClickFocus );
+  groupsListButton->setFocusPolicy( Qt::TabFocus );
+  groupsListButton->setAccessibleName( tr( "Open groups list" ) );
 
   connect( groupsListMenu, &QMenu::aboutToShow, this, &Groups::fillGroupsMenu );
   connect( groupsListMenu, &QMenu::triggered, this, &Groups::switchToGroup );

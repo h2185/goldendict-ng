@@ -1,6 +1,7 @@
 /* This file is (c) 2008-2012 Konstantin Isakov <ikm@goldendict.org>
  * Part of GoldenDict. Licensed under GPLv3 or later, see the LICENSE file */
 
+#include "common/a11y.hh"
 #include "scanpopup.hh"
 #include "folding.hh"
 #include "articlesaver.hh"
@@ -89,6 +90,21 @@ ScanPopup::ScanPopup( QWidget * parent,
     ui.goBackButton->setIcon( QIcon( ":/icons/next.svg" ) );
     ui.goForwardButton->setIcon( QIcon( ":/icons/previous.svg" ) );
   }
+
+  // Spoken names for the icon-only buttons
+  for ( QToolButton * button : { ui.goBackButton,
+                                 ui.goForwardButton,
+                                 ui.pronounceButton,
+                                 ui.sendWordButton,
+                                 ui.saveArticleButton,
+                                 ui.sendWordToFavoritesButton,
+                                 ui.onTopButton,
+                                 ui.pinButton } ) {
+    A11y::nameFromToolTip( button );
+    button->setFocusPolicy( Qt::TabFocus );
+  }
+  A11y::setName( ui.pinButton, tr( "Pin window" ), ui.pinButton->toolTip() );
+  A11y::setName( translateBox->translateLine(), tr( "Word to look up" ) );
 
   setStatusBar( nullptr );
 
