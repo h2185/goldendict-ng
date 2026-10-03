@@ -543,6 +543,8 @@ DictGroupsWidget::DictGroupsWidget( QWidget * parent ):
   QToolButton * addTabButton = new QToolButton( this );
   addTabButton->setAutoRaise( true );
   addTabButton->setIcon( QIcon( ":/icons/addtab.svg" ) );
+  addTabButton->setAccessibleName( tr( "Add new group tab" ) );
+  addTabButton->setToolTip( tr( "Add new group tab" ) );
   setCornerWidget( addTabButton, Qt::TopLeftCorner );
 
   connect( addTabButton, &QToolButton::clicked, this, &DictGroupsWidget::addNewTab );

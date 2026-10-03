@@ -298,6 +298,9 @@ struct Preferences
   /// Show every looked up article as text in the screen reader friendly text view (see ArticleTextDialog)
   bool openResultsAsText = true;
 
+  /// Longest line of the screen reader text view in characters; 0 = no line breaks
+  int textViewLineLength = 80;
+
   bool enableMainWindowHotkey;
   bool enableClipboardHotkey;
 

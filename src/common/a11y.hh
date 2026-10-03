@@ -5,6 +5,8 @@
 
 #include <QAbstractButton>
 #include <QAccessible>
+#include <QAccessibleWidget>
+#include <QGroupBox>
 #include <QAction>
 #include <QKeySequence>
 #include <QPointer>
@@ -110,6 +112,78 @@ inline void nameFromToolTip( QAbstractButton * button )
   if ( button && button->accessibleName().isEmpty() ) {
     button->setAccessibleName( stripMnemonic( button->toolTip().isEmpty() ? button->text() : button->toolTip() ) );
   }
+}
+
+/// Qt reports a checkable group box ("Use proxy server", "Enable system tray icon" ...) as a plain "grouping",
+/// so screen readers do not say that it is a check box, do not speak its state, and sometimes not even its title.
+/// This replacement reports it as a check box with the title as name and the real checked state.
+class CheckableGroupBoxAccessible: public QAccessibleWidget
+{
+public:
+  explicit CheckableGroupBoxAccessible( QGroupBox * box ):
+    QAccessibleWidget( box, QAccessible::CheckBox )
+  {
+  }
+
+  QString text( QAccessible::Text t ) const override
+  {
+    if ( t == QAccessible::Name ) {
+      QString name = widget()->accessibleName();
+      if ( name.isEmpty() ) {
+        name = stripMnemonic( box()->title() );
+      }
+      return name;
+    }
+    return QAccessibleWidget::text( t );
+  }
+
+  QAccessible::State state() const override
+  {
+    QAccessible::State result = QAccessibleWidget::state();
+    result.checkable          = true;
+    result.checked            = box()->isChecked();
+    return result;
+  }
+
+  QStringList actionNames() const override
+  {
+    QStringList names = QAccessibleWidget::actionNames();
+    names << QAccessibleActionInterface::toggleAction() << QAccessibleActionInterface::pressAction();
+    return names;
+  }
+
+  void doAction( const QString & actionName ) override
+  {
+    if ( actionName == QAccessibleActionInterface::toggleAction()
+         || actionName == QAccessibleActionInterface::pressAction() ) {
+      box()->setChecked( !box()->isChecked() );
+      return;
+    }
+    QAccessibleWidget::doAction( actionName );
+  }
+
+private:
+  QGroupBox * box() const
+  {
+    return static_cast< QGroupBox * >( widget() );
+  }
+};
+
+inline QAccessibleInterface * accessibleFactory( const QString & className, QObject * object )
+{
+  if ( className == QLatin1String( "QGroupBox" ) ) {
+    auto * box = qobject_cast< QGroupBox * >( object );
+    if ( box && box->isCheckable() ) {
+      return new CheckableGroupBoxAccessible( box );
+    }
+  }
+  return nullptr;
+}
+
+/// Call once, after the QApplication has been created.
+inline void installAccessibleFactory()
+{
+  QAccessible::installFactory( &accessibleFactory );
 }
 
 } // namespace A11y

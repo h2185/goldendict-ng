@@ -934,7 +934,11 @@ in the pressed state when the word selection changes.</string>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_7">
          <item>
-          <widget class="QKeySequenceEdit" name="mainWindowHotkey"/>
+          <widget class="QKeySequenceEdit" name="mainWindowHotkey">
+           <property name="accessibleName">
+            <string>Hotkey to show or hide the main window</string>
+           </property>
+          </widget>
          </item>
          <item>
           <spacer name="horizontalSpacer_2">
@@ -961,7 +965,11 @@ in the pressed state when the word selection changes.</string>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_8">
          <item>
-          <widget class="QKeySequenceEdit" name="clipboardHotkey"/>
+          <widget class="QKeySequenceEdit" name="clipboardHotkey">
+           <property name="accessibleName">
+            <string>Hotkey to translate a word from clipboard</string>
+           </property>
+          </widget>
          </item>
          <item>
           <spacer name="horizontalSpacer_4">
@@ -1053,6 +1061,9 @@ in the pressed state when the word selection changes.</string>
           </item>
           <item row="0" column="1">
            <widget class="QComboBox" name="internalPlayerBackend">
+            <property name="accessibleName">
+             <string>Internal audio player backend</string>
+            </property>
             <property name="toolTip">
              <string>Choose audio back end</string>
             </property>
@@ -1070,6 +1081,9 @@ in the pressed state when the word selection changes.</string>
           </item>
           <item row="1" column="1">
            <widget class="QLineEdit" name="audioPlaybackProgram">
+            <property name="accessibleName">
+             <string>External audio player program</string>
+            </property>
             <property name="enabled">
              <bool>false</bool>
             </property>
@@ -1857,6 +1871,9 @@ download page.</string>
           </item>
           <item row="1" column="1">
            <widget class="QSpinBox" name="inputPhraseLengthLimit">
+            <property name="accessibleName">
+             <string>Ignore input phrases longer than, number of symbols</string>
+            </property>
             <property name="toolTip">
              <string>Input phrases longer than this size will be ignored</string>
             </property>
@@ -1924,6 +1941,9 @@ from mouse-over, selection, clipboard or command line</string>
           </item>
           <item row="0" column="1">
            <widget class="QSpinBox" name="articleSizeLimit">
+            <property name="accessibleName">
+             <string>Collapse articles longer than, number of symbols</string>
+            </property>
             <property name="toolTip">
              <string>Articles longer than this size will be collapsed</string>
             </property>

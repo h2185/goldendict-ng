@@ -800,6 +800,13 @@ Class load()
     c.preferences.alwaysOnTop  = ( preferences.namedItem( "alwaysOnTop" ).toElement().text() == "1" );
     c.preferences.searchInDock = ( preferences.namedItem( "searchInDock" ).toElement().text() == "1" );
 
+    if ( !preferences.namedItem( "textViewLineLength" ).isNull() ) {
+      const int length = preferences.namedItem( "textViewLineLength" ).toElement().text().toInt();
+      if ( length == 0 || ( length >= 20 && length <= 400 ) ) {
+        c.preferences.textViewLineLength = length;
+      }
+    }
+
     if ( !preferences.namedItem( "openResultsAsText" ).isNull() ) {
       c.preferences.openResultsAsText = ( preferences.namedItem( "openResultsAsText" ).toElement().text() == "1" );
     }
@@ -1878,6 +1885,10 @@ void save( const Class & c )
 
     opt = dd.createElement( "searchInDock" );
     opt.appendChild( dd.createTextNode( c.preferences.searchInDock ? "1" : "0" ) );
+    preferences.appendChild( opt );
+
+    opt = dd.createElement( "textViewLineLength" );
+    opt.appendChild( dd.createTextNode( QString::number( c.preferences.textViewLineLength ) ) );
     preferences.appendChild( opt );
 
     opt = dd.createElement( "openResultsAsText" );

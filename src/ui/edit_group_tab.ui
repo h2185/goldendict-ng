@@ -101,6 +101,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="clearShortCut">
+       <property name="accessibleName">
+        <string>Clear shortcut</string>
+       </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
          <horstretch>0</horstretch>

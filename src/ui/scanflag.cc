@@ -9,6 +9,7 @@ ScanFlag::ScanFlag( QWidget * parent ):
 {
 
   pushButton->setIcon( QIcon( ":/icons/programicon.png" ) );
+  pushButton->setAccessibleName( tr( "Look up the selected text" ) );
 
   setCentralWidget( pushButton );
 

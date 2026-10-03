@@ -1,6 +1,7 @@
 /* This file is (c) 2008-2012 Konstantin Isakov <ikm@goldendict.org>
  * Part of GoldenDict. Licensed under GPLv3 or later, see the LICENSE file */
 
+#include "common/a11y.hh"
 #include "config.hh"
 #include "logger.hh"
 #include "mainwindow.hh"
@@ -323,6 +324,9 @@ int main( int argc, char ** argv )
 #ifndef Q_OS_MACOS
   // macOS icon is defined in Info.plist
   GD_QApplication::setWindowIcon( QIcon( ":/icons/programicon.png" ) );
+
+  // Checkable group boxes in the dialogs must be reported to screen readers as check boxes
+  A11y::installAccessibleFactory();
 #endif
 
 #if defined( USE_BREAKPAD )

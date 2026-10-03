@@ -62,6 +62,9 @@
     <layout class="QHBoxLayout" name="toolbarLayout">
      <item>
       <widget class="QComboBox" name="searchModeCombo">
+       <property name="accessibleName">
+        <string>Search mode</string>
+       </property>
        <property name="toolTip">
         <string>This element determines how filter string will be interpreted</string>
        </property>
@@ -141,7 +144,11 @@
    </layout>
    </item>
    <item>
-    <widget class="QListView" name="headersListView"/>
+    <widget class="QListView" name="headersListView">
+     <property name="accessibleName">
+      <string>Headwords</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QLabel" name="headersNumber">

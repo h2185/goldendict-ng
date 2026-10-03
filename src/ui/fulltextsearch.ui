@@ -29,7 +29,11 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
-         <widget class="QLineEdit" name="searchLine"/>
+         <widget class="QLineEdit" name="searchLine">
+          <property name="accessibleName">
+           <string>Full-text search query</string>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QLabel" name="label_8">
@@ -50,7 +54,11 @@
     </widget>
    </item>
    <item>
-    <widget class="QListView" name="headwordsView"/>
+    <widget class="QListView" name="headwordsView">
+     <property name="accessibleName">
+      <string>Search results</string>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">

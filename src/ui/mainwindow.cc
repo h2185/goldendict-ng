@@ -644,6 +644,26 @@ MainWindow::MainWindow( Config::Class & cfg_ ):
   ui.menuView->addSeparator();
   ui.menuView->addAction( &readArticleTextAction );
   ui.menuView->addAction( &openResultsAsTextAction );
+
+  {
+    auto * lineLengthMenu  = ui.menuView->addMenu( tr( "Text View Line &Length" ) );
+    auto * lineLengthGroup = new QActionGroup( lineLengthMenu );
+    const std::vector< std::pair< int, QString > > options = { { 60, tr( "60 characters" ) },
+                                                               { 80, tr( "80 characters" ) },
+                                                               { 100, tr( "100 characters" ) },
+                                                               { 120, tr( "120 characters" ) },
+                                                               { 0, tr( "No line breaks (one line per paragraph)" ) } };
+    for ( const auto & option : options ) {
+      const int length = option.first;
+      QAction * action = lineLengthMenu->addAction( option.second );
+      action->setCheckable( true );
+      action->setActionGroup( lineLengthGroup );
+      action->setChecked( cfg.preferences.textViewLineLength == length );
+      connect( action, &QAction::triggered, this, [ this, length ]() {
+        cfg.preferences.textViewLineLength = length;
+      } );
+    }
+  }
   ui.menuView->addSeparator();
   ui.menuView->addAction( &showDictBarNamesAction );
   ui.menuView->addSeparator();
@@ -2537,6 +2557,7 @@ void MainWindow::editPreferences()
     p.hideMenubar    = cfg.preferences.hideMenubar;
     p.searchInDock   = cfg.preferences.searchInDock;
     p.openResultsAsText = cfg.preferences.openResultsAsText;
+    p.textViewLineLength = cfg.preferences.textViewLineLength;
     p.alwaysOnTop    = cfg.preferences.alwaysOnTop;
 
     p.fts.dialogGeometry = cfg.preferences.fts.dialogGeometry;
@@ -4517,6 +4538,7 @@ void MainWindow::showArticleText()
         title,
         json,
         plain,
+        cfg.preferences.textViewLineLength,
         [ this, viewGuard ]( const QUrl & url ) -> bool {
           if ( !viewGuard ) {
             return false;

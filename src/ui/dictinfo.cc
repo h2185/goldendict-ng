@@ -27,6 +27,8 @@ void DictInfo::showInfo( sptr< Dictionary::Class > dict )
   ui.enableFullindex->setText( dict->canFTS() ? tr( "Full-text search enabled" ) : tr( "Full-text search disabled" ) );
   ui.enableFullindex->setVisible( dict->isLocalDictionary() );
   ui.ftsToggleButton->setText( dict->canFTS() ? tr( "Disable" ) : tr( "Enable" ) );
+  ui.ftsToggleButton->setAccessibleName(
+    dict->canFTS() ? tr( "Disable full-text search for this dictionary" ) : tr( "Enable full-text search for this dictionary" ) );
   ui.ftsToggleButton->setVisible( dict->isLocalDictionary() );
   ui.dictionaryTotalArticles->setText( QString::number( dict->getArticleCount() ) );
   ui.dictionaryTotalWords->setText( QString::number( dict->getWordCount() ) );
@@ -111,4 +113,6 @@ void DictInfo::on_ftsToggleButton_clicked()
 
   ui.enableFullindex->setText( newState ? tr( "Full-text search enabled" ) : tr( "Full-text search disabled" ) );
   ui.ftsToggleButton->setText( newState ? tr( "Disable" ) : tr( "Enable" ) );
+  ui.ftsToggleButton->setAccessibleName(
+    newState ? tr( "Disable full-text search for this dictionary" ) : tr( "Enable full-text search for this dictionary" ) );
 }

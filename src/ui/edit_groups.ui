@@ -48,6 +48,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="addDictsToGroup">
+       <property name="accessibleName">
+        <string>Add the selected dictionaries to the group</string>
+       </property>
        <property name="minimumSize">
         <size>
          <width>32</width>
@@ -73,6 +76,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="removeDictsFromGroup">
+       <property name="accessibleName">
+        <string>Remove the selected dictionaries from the group</string>
+       </property>
        <property name="minimumSize">
         <size>
          <width>32</width>
